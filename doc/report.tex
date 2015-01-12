@@ -1,0 +1,87 @@
+\documentclass[11pt,a4paper]{article}
+
+% basic packages
+\usepackage{float}
+\usepackage{fullpage}
+\usepackage{polski}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[utf8x]{inputenc}
+
+% bibliography and links
+\usepackage{url}
+\usepackage{cite}
+\def\UrlBreaks{\do\/\do-}
+\usepackage[hidelinks]{hyperref}
+
+% listings
+\usepackage{listings}
+
+\pagenumbering{gobble}
+
+\begin{document}
+
+\section*{Łamigłówka architekta}
+\subsection*{Podział na pakiety}
+Całość kodu została podzielona na~2 pakiety: \textit{UI} oraz \textit{Logic}.
+Pierwszy z~pakietów odpowiada za~komunikację z~użytkownikiem (wczytanie
+parametrów łamigłówki oraz prezentację rozwiązania). Pakiet \textit{Logic}
+odpowiada za~znalezienie rozwiązania łamigłówki.
+
+\subsection*{Komunikacja z~użytkownikiem}
+Na początku działania programu wczytywane są~parametry łamigłówki z~pliku.
+Za~wczytanie oraz przetworzenie danych z~pliku odpowiedzialna jest funkcja
+\textit{loadPuzzle} z~modułu \newline \textit{UI.PuzzleLoader}.
+
+Za~prezentację wyniku odpowiada funkcja \textit{prezentResult} z~modułu
+\textit{UI.ResultPrezenter}. Funkcja ta~najpierw wypisuje w~konsoli
+rozwiązanie, a~następnie zapisuje wynik do~wskazanego przez użytkownika
+pliku. Za~wypisanie wyniku na~ekranie odpowiada funkcja \textit{printSolution}
+z~modułu \textit{UI.ResultPrinter}.
+
+\subsection*{Poszukiwanie rozwiązania}
+Poszukiwanie rozwiązania przypomina przeszukiwanie wgłąb drzewa, w którym
+węzły stanowią rozwiązania (częściowe lub całkowite, niekoniecznie poprawne).
+Rozwiązaniem całkowitym jest takie rozwiązanie, w~którym każdy dom
+ma~przydzielony swój zbiornik. Przy przyjęciu, że~,,przestrzeń'' rozwiązań
+ma~postać drzewa, rozwiązaniami całkowitymi są ,,liście'' drzewa.
+
+Funkcją odpowiedzialną za~znalezienie rozwiązania jest funkcja
+\textit{findSolution'} z~modułu \textit{Logic.SolutionFinder}. Ma~ona postać
+rekurencyjną, gdzie warunkiem końcowym rekurencji jest znalezienie rozwiązania
+całkowitego lub otrzymanie rozwiązania błędnego (częściowego lub całkowitego).
+Funkcja \textit{findSolution'} jako jeden z~parametrów przyjmuje częściowe
+rozwiązanie (lista przydziałów zbiornik$\rightarrow$dom). Dlatego moduł
+\textit{Logic.SolutionFinder} udostępnia funkcję \textit{findSolution}
+wywołującą funkcję \textit{findSolution'} z~pustą listą przydziałów.
+
+Funkcja \textit{findSolution'} zawszae na~ początku sprawdza czy~otrzymane
+rozwiązanie jest poprawne i~jeśli wszystkie domy mają przydzielone zbiorniki,
+zwraca otrzymane rozwiązanie. Jeśli otrzymane rozwiązanie jest błędne, zwracana
+jest lista pusta, co~oznacza porażkę w znaleziu rozwiązania.
+
+Jeśli funkcja \textit{findSolution'} otrzyma niepustą listę domów, wybiera
+jeden z domow, i~wywołuje dla niego funkcję \textit{movesIter}, której
+wynik jest zwracany.
+
+Funkcja \textit{movesIter} ma~za~zadanie znaleźć zbiornik dla zadanego domu
+iterując po~możliwych pozycjach zbiornika względem domu,
+a~następnie uruchomić \textit{findSolution'} dla pozostałych domów.
+Jednym z~argumentow otrzymywanych przez \textit{movesIter} jest lista możliwych
+pozycji zbiornika (przy wywołaniu najwyższego poziomu jest to~lista wszystkich
+możliwych ruchów, niekoniecznie poprawnych), która jest zmniejszana wraz
+z~iterowaniem po~kolejnych możliwych pozycjach zbiornika. Jeśli wywoływana
+w~\textit{movesIter} funkcja \textit{findSolution'} zwróci rozwiązanie poprawne,
+wówczas jest ono~zwracane. W~przeciwnym wypadku badane są kolejne dostępne
+ruchy lub zwracana jest lista pusta (jeśli nie~ma~więcej możliwych ruchów).
+
+Za~sprawdzanie poprawności rozwiązania odpowiada funkcja
+\textit{hasSolutionErrors} z~modułu\newline \textit{Logic.Constraints}.
+Sprawdza ona czy nie zostały złamane ograniczenia na liczbę zbiorników
+w~wierszu/kolumnie, czy nowododany zbiornik nie koliduje z~innymi
+obiektami i czy nie jest poza planszą. Dodatkowo w~module
+\textit{Logic.Constraints} udostępniane są~funkcje \textit{updateRowConstr} oraz \textit{updateColumnConstr}
+aktualizujące ograniczenia na liczbę zbiorników w~wierszach i~kolumnach
+po~wykonaniu wybranego ruchu.
+
+\end{document}
