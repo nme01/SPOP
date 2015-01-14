@@ -81,9 +81,9 @@ houseChar::Char
 
 emptyField = ' '
 tankUnder = '^'
-tankAbove = '_'
-tankToTheRight = '>'
-tankToTheLeft = '<'
+tankAbove = 'v'
+tankToTheRight = '<'
+tankToTheLeft = '>'
 houseChar = 'H'
 
 --Creates an empty board of given size

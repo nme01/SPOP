@@ -43,8 +43,8 @@ z~modułu \textit{UI.ResultPrinter}.
 Poszukiwanie rozwiązania przypomina przeszukiwanie wgłąb drzewa, w którym
 węzły stanowią rozwiązania (częściowe lub całkowite, niekoniecznie poprawne).
 Rozwiązaniem całkowitym jest takie rozwiązanie, w~którym każdy dom
-ma~przydzielony swój zbiornik. Przy przyjęciu, że~,,przestrzeń'' rozwiązań
-ma~postać drzewa, rozwiązaniami całkowitymi są ,,liście'' drzewa.
+ma~przydzielony swój zbiornik. Przy przyjęciu, że~przestrzeń rozwiązań
+ma~postać drzewa, rozwiązaniami całkowitymi są liście drzewa.
 
 Funkcją odpowiedzialną za~znalezienie rozwiązania jest funkcja
 \textit{findSolution'} z~modułu \textit{Logic.SolutionFinder}. Ma~ona postać
@@ -55,7 +55,7 @@ rozwiązanie (lista przydziałów zbiornik$\rightarrow$dom). Dlatego moduł
 \textit{Logic.SolutionFinder} udostępnia funkcję \textit{findSolution}
 wywołującą funkcję \textit{findSolution'} z~pustą listą przydziałów.
 
-Funkcja \textit{findSolution'} zawszae na~ początku sprawdza czy~otrzymane
+Funkcja \textit{findSolution'} zawsze na~ początku sprawdza czy~otrzymane
 rozwiązanie jest poprawne i~jeśli wszystkie domy mają przydzielone zbiorniki,
 zwraca otrzymane rozwiązanie. Jeśli otrzymane rozwiązanie jest błędne, zwracana
 jest lista pusta, co~oznacza porażkę w znaleziu rozwiązania.
